@@ -109,8 +109,7 @@ namespace Gestion_d_ecole
         {
             int index = e.RowIndex;
             DataGridViewRow row = dataGridView1.Rows[index];
-            txtetudiant.Text = row.Cells[1].Value.ToString() + " " + row.Cells[2].Value.ToString();
-
+            txtetudiant.Text = row.Cells[3].Value.ToString() + " " + row.Cells[2].Value.ToString();
         }
     }
 }
