@@ -135,6 +135,10 @@
     <Compile Include="Migrations\202502271214228_changement_des_listes_à_collection.Designer.cs">
       <DependentUpon>202502271214228_changement_des_listes_à_collection.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202503051202414_InitialCreate.cs" />
+    <Compile Include="Migrations\202503051202414_InitialCreate.Designer.cs">
+      <DependentUpon>202503051202414_InitialCreate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Note.cs" />
     <Compile Include="OTPCode.cs" />
@@ -173,6 +177,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202502271214228_changement_des_listes_à_collection.resx">
       <DependentUpon>202502271214228_changement_des_listes_à_collection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503051202414_InitialCreate.resx">
+      <DependentUpon>202503051202414_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -168,10 +168,22 @@ namespace Gestion_d_ecole
                 Etudiant etudiant = db.Etudiants.Find(etudiantId);
                 if (etudiant != null)
                 {
+                    supprimer(etudiantId);
                     db.Etudiants.Remove(etudiant);
                     db.SaveChanges();
                     MessageBox.Show(" Classe effacée");
                     refresh();
+                }
+            }
+        }
+        void supprimer(int id)
+        {
+            using (var db = new DB())
+            {
+                var notes = db.Notes.Where(n => n.IdEtudiant == id).ToList();
+                foreach (var note in notes)
+                {
+                    db.Notes.Remove(note);
                 }
             }
         }
