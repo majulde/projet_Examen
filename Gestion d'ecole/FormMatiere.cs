@@ -74,6 +74,7 @@ namespace Gestion_d_ecole
             DataGridViewRow row = dataGridView1.Rows[index];
             txtmatierechoisi.Text = row.Cells[1].Value.ToString();
             refreshcours();
+            refreshcoursassoc();
         }
         private void refreshcours()
         {
@@ -84,6 +85,35 @@ namespace Gestion_d_ecole
                 combocours.ValueMember = "Id";
             }
         }
+        private void refreshcoursassoc()
+        {
+            if (dataGridView1.CurrentRow != null)
+            {
+                int idMatiere = (int)dataGridView1.CurrentRow.Cells[0].Value;
+
+                using (var db = new DB())
+                {
+                    // Chargement de la matière avec ses relations CoursMatieres
+                    Matiere matiere = db.Matieres
+                        .Include("CoursMatieres.Cours") // Inclure les cours liés via la table de liaison
+                        .FirstOrDefault(m => m.Id == idMatiere);
+
+                    if (matiere != null)
+                    {
+                        // Récupérer uniquement les cours associés
+                        var coursAssocies = matiere.CoursMatieres
+                            .Select(p => p.Cours)
+                            .ToList();
+
+                        combodejaassocie.DataSource = coursAssocies;
+                        combodejaassocie.DisplayMember = "NomCours"; // Assurez-vous que cette propriété existe
+                        combodejaassocie.ValueMember = "Id";
+                    }
+                    
+                }
+            }
+        }
+
 
         private void combocours_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -100,7 +130,8 @@ namespace Gestion_d_ecole
         private void btnannuler_Click(object sender, EventArgs e)
         {
             //refresh
-            //combocours.Items.Clear();
+            combocours.DataSource = null;
+            combocours.Items.Clear();
             txtmatierechoisi.Text = string.Empty;
         }
 
@@ -108,67 +139,98 @@ namespace Gestion_d_ecole
         {
             if (combocours.Text.Length > 0 && txtmatierechoisi.Text.Length > 0)
             {
-
                 int idCours = (int)combocours.SelectedValue;
                 int idMatiere = (int)dataGridView1.CurrentRow.Cells[0].Value;
-                //ajouter un coursmatiere
-                /*using (var db = new DB())
-                {
-                    CoursMatiere coursmatiere = new CoursMatiere();
 
-                    Cours cours = db.Cours.Find(combocours.SelectedValue);
-                    coursmatiere.Cours = cours;
-
-                    Matiere matiere = db.Matieres.Find((int)dataGridView1.CurrentRow.Cells[0].Value);
-                    coursmatiere.Matiere = matiere;
-                    db.CoursMatieres.Add(coursmatiere);
-                    db.SaveChanges();
-                    MessageBox.Show("Cours associé");
-                    
-                }*/
-                if (existcoursmatiere(idCours,idMatiere)==0) {
-                try
+                using (var db = new DB())
                 {
-                    using (var db = new DB())
+                    // Vérifier si la relation existe déjà
+                    bool relationExiste = db.CoursMatieres
+                        .Any(cm => cm.IdCours == idCours && cm.IdMatiere == idMatiere);
+
+                    if (relationExiste)
                     {
-                        var coursMatiere = new CoursMatiere
+                        MessageBox.Show("Cette relation entre le cours et la matière existe déjà !");
+                        return;
+                    }
+
+                    // Trouver les objets Cours et Matiere existants
+                    Cours cours = db.Cours.Include("CoursMatieres").FirstOrDefault(c => c.Id == idCours);
+                    Matiere matiere = db.Matieres.Include("CoursMatieres").FirstOrDefault(m => m.Id == idMatiere);
+
+                    if (cours != null && matiere != null)
+                    {
+                        // Créer une nouvelle liaison Cours-Matière
+                        CoursMatiere coursmatiere = new CoursMatiere
                         {
-                            IdCours = idCours,
-                            IdMatiere = idMatiere
+                            Cours = cours,
+                            Matiere = matiere,
+                            IdCours = cours.Id,
+                            IdMatiere = matiere.Id
                         };
 
-                        db.CoursMatieres.Add(coursMatiere);
+                        // Ajouter la relation dans les collections
+                        cours.CoursMatieres.Add(coursmatiere);
+                        matiere.CoursMatieres.Add(coursmatiere);
+
+                        // Ajouter à la base de données et sauvegarder
+                        db.CoursMatieres.Add(coursmatiere);
                         db.SaveChanges();
-                        MessageBox.Show("Cours associé");
+
+                        MessageBox.Show("Cours et Matière associés avec succès !");
                         btnannuler_Click(sender, e);
                     }
+                    else
+                    {
+                        MessageBox.Show("Cours ou Matière introuvable !");
+                    }
                 }
-                catch (Exception ex)
-                {
-                    // Gérer l'exception (journaliser, afficher un message, etc.)
-                    Console.WriteLine($"Une erreur est survenue : {ex.Message}");
-                }
-                }
-                else { MessageBox.Show("Cours deja associé"); }
             }
-                else
-                {
-                    MessageBox.Show("Veuillez selectionner une matiere et un cours");
-                }
-
-        }
-        private int existcoursmatiere(int idcours, int idmatiere)
-        {
-            int x = 0;
-            using (var db = new DB())
+            else
             {
-                x = db.CoursMatieres
-                    .Where(o => o.IdCours == idcours && o.IdMatiere == idmatiere)
-                    .Select(o => o.IdCours)
-                    .FirstOrDefault();
+                    MessageBox.Show("Veuillez selectionner une matiere et un cours");
             }
-            return x;
+
         }
 
+        private void combodejaassocie_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void btndissocier_Click(object sender, EventArgs e)
+        {
+            if (combodejaassocie.Text.Length > 0 && dataGridView1.CurrentRow != null)
+            {
+                int idCours = (int)combodejaassocie.SelectedValue;
+                int idMatiere = (int)dataGridView1.CurrentRow.Cells[0].Value;
+
+                using (var db = new DB())
+                {
+                    // Vérifier si la relation existe
+                    var coursMatiere = db.CoursMatieres
+                        .FirstOrDefault(p => p.IdCours == idCours && p.IdMatiere == idMatiere);
+
+                    if (coursMatiere != null)
+                    {
+                        // Supprimer la relation
+                        db.CoursMatieres.Remove(coursMatiere);
+                        db.SaveChanges();
+
+                        MessageBox.Show("Association supprimée avec succès !");
+                        btnannuler_Click(sender, e);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Cette relation n'existe pas !");
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Veuillez sélectionner une matière et un cours à dissocier !");
+            }
+
+        }
     }
 }

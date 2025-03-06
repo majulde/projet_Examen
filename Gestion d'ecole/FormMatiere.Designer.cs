@@ -40,6 +40,9 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.btnannuler = new System.Windows.Forms.Button();
+            this.combodejaassocie = new System.Windows.Forms.ComboBox();
+            this.btndissocier = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -85,7 +88,7 @@
             // btnassocier
             // 
             this.btnassocier.Font = new System.Drawing.Font("Times New Roman", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnassocier.Location = new System.Drawing.Point(655, 466);
+            this.btnassocier.Location = new System.Drawing.Point(470, 498);
             this.btnassocier.Name = "btnassocier";
             this.btnassocier.Size = new System.Drawing.Size(108, 41);
             this.btnassocier.TabIndex = 4;
@@ -96,7 +99,7 @@
             // combocours
             // 
             this.combocours.FormattingEnabled = true;
-            this.combocours.Location = new System.Drawing.Point(655, 412);
+            this.combocours.Location = new System.Drawing.Point(548, 427);
             this.combocours.Name = "combocours";
             this.combocours.Size = new System.Drawing.Size(127, 24);
             this.combocours.TabIndex = 5;
@@ -113,7 +116,7 @@
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(375, 255);
+            this.dataGridView1.Size = new System.Drawing.Size(608, 255);
             this.dataGridView1.TabIndex = 6;
             this.dataGridView1.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDoubleClick);
             // 
@@ -132,7 +135,7 @@
             this.txtmatierechoisi.Enabled = false;
             this.txtmatierechoisi.Location = new System.Drawing.Point(655, 358);
             this.txtmatierechoisi.Name = "txtmatierechoisi";
-            this.txtmatierechoisi.Size = new System.Drawing.Size(127, 22);
+            this.txtmatierechoisi.Size = new System.Drawing.Size(317, 22);
             this.txtmatierechoisi.TabIndex = 8;
             // 
             // label3
@@ -149,7 +152,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(471, 410);
+            this.label4.Location = new System.Drawing.Point(364, 425);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(161, 23);
             this.label4.TabIndex = 10;
@@ -158,7 +161,7 @@
             // btnannuler
             // 
             this.btnannuler.Font = new System.Drawing.Font("Times New Roman", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnannuler.Location = new System.Drawing.Point(505, 466);
+            this.btnannuler.Location = new System.Drawing.Point(667, 498);
             this.btnannuler.Name = "btnannuler";
             this.btnannuler.Size = new System.Drawing.Size(108, 41);
             this.btnannuler.TabIndex = 11;
@@ -166,11 +169,44 @@
             this.btnannuler.UseVisualStyleBackColor = true;
             this.btnannuler.Click += new System.EventHandler(this.btnannuler_Click);
             // 
+            // combodejaassocie
+            // 
+            this.combodejaassocie.FormattingEnabled = true;
+            this.combodejaassocie.Location = new System.Drawing.Point(937, 421);
+            this.combodejaassocie.Name = "combodejaassocie";
+            this.combodejaassocie.Size = new System.Drawing.Size(127, 24);
+            this.combodejaassocie.TabIndex = 12;
+            this.combodejaassocie.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.combodejaassocie_KeyPress);
+            // 
+            // btndissocier
+            // 
+            this.btndissocier.Font = new System.Drawing.Font("Times New Roman", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btndissocier.Location = new System.Drawing.Point(845, 498);
+            this.btndissocier.Name = "btndissocier";
+            this.btndissocier.Size = new System.Drawing.Size(108, 41);
+            this.btndissocier.TabIndex = 13;
+            this.btndissocier.Text = "Dissocier";
+            this.btndissocier.UseVisualStyleBackColor = true;
+            this.btndissocier.Click += new System.EventHandler(this.btndissocier_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(739, 421);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(192, 23);
+            this.label5.TabIndex = 14;
+            this.label5.Text = "Cours Deja associée :";
+            // 
             // FormMatiere
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(891, 551);
+            this.ClientSize = new System.Drawing.Size(1203, 551);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.btndissocier);
+            this.Controls.Add(this.combodejaassocie);
             this.Controls.Add(this.btnannuler);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -206,5 +242,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnannuler;
+        private System.Windows.Forms.ComboBox combodejaassocie;
+        private System.Windows.Forms.Button btndissocier;
+        private System.Windows.Forms.Label label5;
     }
 }

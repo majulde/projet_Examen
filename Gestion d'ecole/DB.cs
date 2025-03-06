@@ -9,7 +9,7 @@ namespace Gestion_d_ecole
 {
     internal class DB : DbContext
     {
-        public DB():base("ecoleConnect") { }
+        public DB() : base("ecoleConnect") { }
         public DbSet<Etudiant> Etudiants { get; set; }
         public DbSet<Classe> Classes { get; set; }
         public DbSet<Cours> Cours { get; set; }

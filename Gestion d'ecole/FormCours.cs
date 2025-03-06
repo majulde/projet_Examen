@@ -103,13 +103,29 @@ namespace Gestion_d_ecole
                 Cours cours = db.Cours.Find(coursId);
                 if (cours != null)
                 {
-                    db.Cours.Remove(cours);
-                    db.SaveChanges();
-                    MessageBox.Show(" Cours  effacé");
+                    if (verif_relation_cours(coursId) == 0)
+                    {
+                        db.Cours.Remove(cours);
+                        db.SaveChanges();
+                        MessageBox.Show(" Cours  effacé");
+                    }
+                    else
+                    {
+                        MessageBox.Show(" Faut dabord dissocier Ce cours a tous les classes et matieres liess");
+                    }
                 }
             }
             effacer();
             refresh();
+        }
+        private int verif_relation_cours(int coursId) { 
+            int x = 0;
+            using (var db = new DB())
+            {
+                x = db.ClassesCours.Where(c => c.IdCours == coursId).Count()
+                    + db.CoursMatieres.Where(c => c.IdCours == coursId).Count();
+            }
+            return x;
         }
 
         private void btnajouter_Click(object sender, EventArgs e)

@@ -17,13 +17,5 @@ namespace Gestion_d_ecole
         public Cours Cours { get; set; }
         public Matiere Matiere { get; set; }
     }
-    internal class viewCoursMatiere
-    {
-        [Key, Column(Order = 0)]
-        public int IdCours { get; set; }
-        [Key, Column(Order = 1)]
-        public int IdMatiere { get; set; }
-        public string Cours { get; set; }
-        public string Matiere { get; set; }
-    }
+
 }

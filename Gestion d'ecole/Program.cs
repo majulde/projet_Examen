@@ -16,7 +16,7 @@ namespace Gestion_d_ecole
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormMatiere());
+            Application.Run(new FormEtudiant());
         }
     }
 }
